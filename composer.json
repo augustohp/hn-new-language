@@ -1,0 +1,7 @@
+{
+    "require": {
+        "php": "~5.5",
+        "dg/rss-php": "~1.1",
+        "twig/twig": "~1.16"
+    }
+}
