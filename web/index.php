@@ -25,7 +25,6 @@ call_user_func(function() {
     }
 });
 
-$searchFor = array('language');
 $loader = new Twig_Loader_Filesystem(APP_DIR_TEMPLATES);
 $twig = new Twig_Environment($loader);
 $template = $twig->loadTemplate('layout.twig.html');
