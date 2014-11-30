@@ -25,24 +25,36 @@ call_user_func(function() {
     }
 });
 
-$loader = new Twig_Loader_Filesystem(APP_DIR_TEMPLATES);
-$twig = new Twig_Environment($loader);
-$template = $twig->loadTemplate('layout.twig.html');
+function is_there_a_new_language_out_there() {
+    $rss = Feed::loadRss(APP_URL_RSS);
+    foreach ($rss->item as $suspectEntry) {
+        if (strpos($suspectEntry->title, 'language') === false) {
+            continue;
+        }
 
-$rss = Feed::loadRss(APP_URL_RSS);
-$message = 'No! \o/';
-$title = 'All good!';
-foreach ($rss->item as $suspectEntry) {
-    if (strpos($suspectEntry->title, 'language') === false) {
-        continue;
+        return true;
     }
 
-    $title = 'No good';
-    $message = 'Yes. T.T';
-    break;
+    return false;
 }
 
-echo $template->render(array(
-    'title' => $title,
-    'message' => $message,
-));
+$app = new Silex\Application();
+$app['debug'] = (APP_ENV == 'dev');
+$app->register(new Silex\Provider\TwigServiceProvider(), array('twig.path'=>APP_DIR_TEMPLATES));
+$app->get('/', function() use ($app) {
+    $cache_age = 1 * 60 * 60; // <days> * minutes * seconds
+    $message = 'No new language today!';
+    $title = 'All good!';
+    if (is_there_a_new_language_out_there()) {
+        $title = 'No good';
+        $message = 'Be careful, a new language has appeared.';
+    }
+    header('ETag: '.md5($title.strtotime('today')));
+    header('Cache-Control: public, max-age='.$cache_age);
+    $templateVars = array(
+        'title' => $title,
+        'message' => $message,
+    );
+    return $app['twig']->render('layout.twig.html', $templateVars);
+});
+$app->run();

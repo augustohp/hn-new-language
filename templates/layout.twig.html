@@ -1,21 +1,46 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>{{ title }}</title>
+    <title>{{ title }}</title>
     </head>
+    <style>
+    body {
+        background-color: #89A09A;
+        color: #3E4B51;
+    }
+    a, a:active, a:visited {
+        color: #6F737E;
+        text-decoration: none;
+    }
+    h1 {
+        font-size: 4em;
+        text-align: center;
+        padding: 2em 0;
+    }
+    footer {
+        display: block;
+        width: 100%;
+        margin: 0 auto;
+        text-align: center;
+        margin-top: 5em;
+        font-size: 0.9em;
+    }
+    footer li {
+        display: inline;
+        border-right: 1px solid;
+        padding: 0 10px;
+    }
+    footer li:last-child {
+        border: none;
+    }
+    </style>
     <body>
-        <h1>
-            Any new language on
-            <a href="https://news.ycombinator.com">Hacker News</a>
-            today ?
-        </h1>
-
-        <h2> {{ message }} </h2>
+    <h1>{{ message }}</h1>
 
         <footer>
             <ul>
-                <li> <a href="#"> No copyright </a> </li>
-                <li> This waste of time is <a href="#"> Open Source </a> </li>
+                <li> Information fetched from <a href="http://news.ycombinator.com">Hacker News</a>. </li>
+                <li> This waste of time is <a href="https://github.com/augustohp/hn-new-language">Open Source</a>. </li>
             </ul>
         </footer>
     </body>
